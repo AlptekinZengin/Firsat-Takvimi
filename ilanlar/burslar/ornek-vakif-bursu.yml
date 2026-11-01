@@ -1,0 +1,13 @@
+# ÖRNEK İLAN: gerçek değildir, gerçek bir kaynaktan alınmamıştır.
+baslik: Örnek Öğrenci Başarı Bursu
+bolum: burslar
+duzenleyen: Örnek Eğitim Vakfı
+veren_etiketi: Vakıf/Dernek
+son_basvuru: "2026-11-20"
+kimler: Lisans ve ön lisans öğrencileri başarı ve ihtiyaç koşullarını sağlayarak başvurabilir.
+on_lisans: true
+yer: Çevrimiçi
+ucretli: false
+basvuru_linki: https://example.org/ornek-burs
+eklenme_tarihi: "2026-11-01"
+ornek: true

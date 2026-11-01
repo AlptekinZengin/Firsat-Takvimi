@@ -1,0 +1,168 @@
+:root {
+  color-scheme: light;
+  --murekkep: #20312d;
+  --yesil: #176b51;
+  --zemin: #f5f7f4;
+  --cizgi: #dce5df;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--zemin);
+  color: var(--murekkep);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  line-height: 1.55;
+}
+.sayfa {
+  width: min(100% - 32px, 960px);
+  margin: 0 auto;
+}
+.ust {
+  padding: 42px 0 22px;
+}
+.ust h1 {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: -0.04em;
+}
+.ust p {
+  margin: 4px 0 0;
+  color: #5a6c65;
+}
+.sekme-kaydir {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 8px 0 14px;
+  scrollbar-width: thin;
+}
+.sekme {
+  flex: 0 0 auto;
+  border: 1px solid var(--cizgi);
+  background: white;
+  color: inherit;
+  padding: 9px 13px;
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+}
+.sekme.secili {
+  background: var(--yesil);
+  border-color: var(--yesil);
+  color: white;
+  font-weight: 650;
+}
+.filtre {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  margin: 8px 0 20px;
+}
+.filtre input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--yesil);
+}
+.kart-listesi {
+  display: grid;
+  gap: 14px;
+}
+.kart {
+  background: white;
+  border: 1px solid var(--cizgi);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px #20312d08;
+}
+.kart p {
+  margin: 9px 0;
+}
+.kart-ust {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.kart h2 {
+  margin: 0;
+  font-size: 1.22rem;
+}
+.duzenleyen {
+  color: #64766f;
+}
+.ornek {
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff1cd;
+  color: #714c00;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.son-tarih span {
+  color: var(--yesil);
+  font-weight: 650;
+}
+.etiketler {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 14px 0;
+}
+.etiketler span {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #eef3f0;
+  color: #40554c;
+  font-size: 0.84rem;
+}
+.basvuru {
+  display: inline-block;
+  margin-top: 3px;
+  background: var(--yesil);
+  color: white;
+  border-radius: 9px;
+  padding: 9px 16px;
+  text-decoration: none;
+  font-weight: 700;
+}
+.basvuru:hover {
+  background: #10563f;
+}
+.basvuru:focus-visible,
+.sekme:focus-visible {
+  outline: 3px solid #e2a900;
+  outline-offset: 2px;
+}
+.bos {
+  background: white;
+  border: 1px solid var(--cizgi);
+  border-radius: 12px;
+  padding: 20px;
+}
+footer {
+  border-top: 1px solid var(--cizgi);
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  color: #5a6c65;
+  font-size: 0.92rem;
+}
+@media (max-width: 560px) {
+  .ust {
+    padding-top: 30px;
+  }
+  .kart {
+    padding: 16px;
+  }
+  .kart-ust {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
