@@ -15,4 +15,4 @@ Türkiye'deki üniversite öğrencilerine açık fırsatları son başvuru tarih
 
 - `npm run dev` — yerel geliştirme sunucusu
 - `npm run build` — statik siteyi `out/` klasörüne çıkarır
-- `npm run kontrol` — ilanları doğrular
+- `npm run kontrol` — ilanları doğrular: zorunlu alanlar, bölüm/klasör uyumu, tarihi geçmiş ilan, kırmızı bayrak ifadeleri (IBAN, başvuru ücreti, havale…) ve tekrar eden link. Kırmızı bayrak listesi yardımcı bir süzgeçtir, tam koruma değildir; son onay insandadır. `--bugun YYYY-MM-DD` ile başka bir gün denenebilir.
