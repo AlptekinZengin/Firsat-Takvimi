@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "kontrol": "tsx scripts/kontrol.ts"
+    "kontrol": "tsx scripts/kontrol.ts",
+    "test": "tsx --test testler/kontrol.test.ts"
   },
   "dependencies": {
     "next": "16.4.3",

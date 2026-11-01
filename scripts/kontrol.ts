@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
-import { maddiBolumler } from "../lib/bolumler";
 import { ilanSemasi } from "../lib/ilan-sema";
 import { istanbulBugunu } from "../lib/tarih";
 const args = process.argv.slice(2);
@@ -45,8 +44,10 @@ function bildir(tur: "HATA" | "UYARI", dosya: string, mesaj: string) {
 }
 // Yardımcı bir süzgeçtir, tam koruma değildir. İfadeler normallestir() çıktısı biçiminde yazılır:
 // Türkçe küçük harf, ASCII'ye indirilmiş, boşluklar teke düşürülmüş. Yorum satırları da taranır.
-// Para aktarımı, kart ve kimlik istemek her bölümde HATA.
-const kesinBayraklar = [
+// Proje kuralı: öğrencinin para ödediği hiçbir ilan siteye girmez; hepsi her bölümde HATA.
+// Öğrenciye ödenen para (maaş, ücretli staj, burs miktarı) kural dışıdır; bu yüzden "ücret ödenir" gibi
+// yönü belirsiz ifadeler listede yok, yalnız öğrencinin ödediğini gösterenler var.
+const bayraklar = [
   "iban",
   "papara",
   "havale",
@@ -55,18 +56,16 @@ const kesinBayraklar = [
   "kart bilgi",
   "kimlik fotografi",
   "kimlik fotokopisi",
-];
-// Ücret ifadeleri yalnız burs, staj ve araştırmada HATA (proje kuralı: bu bölümlerde ücret isteyen ilan reddedilir).
-// Etkinlik, eğitim gibi bölümler meşru olarak ücretli olabilir (ucretli: true); orada UYARI.
-const ucretBayraklari = [
   "basvuru ucreti",
   "kayit ucreti",
+  "katilim ucreti",
+  "egitim ucreti",
+  "kurs ucreti",
   "ucret yatir",
   "ucreti yatir",
   "on odeme",
   "depozito",
 ];
-const bayraklar = [...kesinBayraklar, ...ucretBayraklari];
 function ascii(metin: string) {
   return metin.replace(/[çğıöşü]/g, (h) => ({ ç: "c", ğ: "g", ı: "i", ö: "o", ş: "s", ü: "u" })[h]!);
 }
@@ -130,17 +129,8 @@ for (const dosya of dosyalar) {
     }
   }
   const metin = normallestir(ham);
-  const bolum =
-    deger && typeof deger === "object" && typeof (deger as Record<string, unknown>).bolum === "string"
-      ? ((deger as Record<string, unknown>).bolum as string)
-      : path.basename(path.dirname(dosya));
-  const ucretReddedilir = (maddiBolumler as readonly string[]).includes(bolum);
-  for (const { ifade, desen } of bayrakDesenleri) {
-    if (!desen.test(metin)) continue;
-    if (kesinBayraklar.includes(ifade) || ucretReddedilir)
-      bildir("HATA", dosya, `kırmızı bayrak ifade bulundu: "${ifade}".`);
-    else bildir("UYARI", dosya, `ücret ifadesi bulundu: "${ifade}". ucretli: true olduğundan emin ol.`);
-  }
+  for (const { ifade, desen } of bayrakDesenleri)
+    if (desen.test(metin)) bildir("HATA", dosya, `kırmızı bayrak ifade bulundu: "${ifade}".`);
 }
 console.log(`${dosyalar.length} dosya tarandı, ${hatalar} hata, ${uyarilar} uyarı.`);
 process.exitCode = hatalar ? 1 : 0;

@@ -7,7 +7,6 @@ son_basvuru: "2027-01-15"
 kimler: Bilgisayar ve yazılım alanlarında okuyan lisans veya ön lisans öğrencileri başvurabilir.
 on_lisans: true
 yer: İstanbul
-ucretli: false
 basvuru_linki: https://example.org/ornek-staj
 eklenme_tarihi: "2026-11-01"
 ornek: true

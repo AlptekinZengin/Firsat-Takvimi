@@ -1,0 +1,12 @@
+# TEST ÖRNEĞİ: gerçek değildir; testler/kontrol.test.ts kullanır.
+baslik: Test ilanı
+bolum: egitim-bootcamp
+duzenleyen: Örnek Kurum
+veren_etiketi: Topluluk
+son_basvuru: "2027-06-30"
+kimler: "Kayıt ücreti yatırıldıktan sonra yer ayrılır."
+on_lisans: false
+yer: Ankara
+basvuru_linki: https://example.org/t4
+eklenme_tarihi: "2026-11-01"
+ornek: true

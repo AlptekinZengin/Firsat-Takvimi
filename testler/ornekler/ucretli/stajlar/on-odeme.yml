@@ -1,0 +1,12 @@
+# TEST ÖRNEĞİ: gerçek değildir; testler/kontrol.test.ts kullanır.
+baslik: Test ilanı
+bolum: stajlar
+duzenleyen: Örnek Kurum
+veren_etiketi: Şirket
+son_basvuru: "2027-06-30"
+kimler: "Ücretli staj; ön ödeme ile yer ayırtılır."
+on_lisans: false
+yer: Ankara
+basvuru_linki: https://example.org/t5
+eklenme_tarihi: "2026-11-01"
+ornek: true

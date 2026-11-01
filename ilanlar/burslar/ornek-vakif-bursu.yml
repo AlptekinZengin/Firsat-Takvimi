@@ -7,7 +7,6 @@ son_basvuru: "2026-11-20"
 kimler: Lisans ve ön lisans öğrencileri başarı ve ihtiyaç koşullarını sağlayarak başvurabilir.
 on_lisans: true
 yer: Çevrimiçi
-ucretli: false
 basvuru_linki: https://example.org/ornek-burs
 eklenme_tarihi: "2026-11-01"
 ornek: true

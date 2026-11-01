@@ -1,0 +1,12 @@
+# TEST ÖRNEĞİ: gerçek değildir; testler/kontrol.test.ts kullanır.
+baslik: Test ilanı
+bolum: burslar
+duzenleyen: Örnek Kurum
+veren_etiketi: Vakıf/Dernek
+son_basvuru: "2027-06-30"
+kimler: "Burs miktarı aylık 3.000 TL, 9 ay boyunca ödenir. Başvuru ücretsizdir."
+on_lisans: false
+yer: Ankara
+basvuru_linki: https://example.org/t2
+eklenme_tarihi: "2026-11-01"
+ornek: true

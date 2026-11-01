@@ -21,7 +21,6 @@ export const ilanSemasi = z
     kimler: z.string().min(1).max(200),
     on_lisans: z.boolean(),
     yer: z.string().min(1).max(60),
-    ucretli: z.boolean(),
     // Kullanıcı bilgili link (https://banka.com@kotu.site/) kimlik avında kullanılır, kabul edilmez.
     basvuru_linki: z
       .string()

@@ -86,7 +86,6 @@ export function IlanListesi({ ilanlar, derlemeGunu }: { ilanlar: IlanGorunur[]; 
                   <span>{i.veren_etiketi}</span>
                   {i.on_lisans && <span>Ön lisans</span>}
                   <span>{i.yer}</span>
-                  <span>{i.ucretli ? "Ücretli" : "Ücretsiz"}</span>
                 </div>
                 <a className="basvuru" href={i.basvuru_linki} target="_blank" rel="noopener noreferrer">
                   Başvur
