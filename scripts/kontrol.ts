@@ -5,12 +5,23 @@ import { ilanSemasi } from "../lib/ilan-sema";
 import { istanbulBugunu } from "../lib/tarih";
 const args = process.argv.slice(2);
 const bugunIndeks = args.indexOf("--bugun");
-const bilinmeyenBayrak = args.find((a) => a.startsWith("--") && a !== "--bugun");
+const publicIndeks = args.indexOf("--public");
+const bilinmeyenBayrak = args.find((a) => a.startsWith("--") && a !== "--bugun" && a !== "--public");
 if (bilinmeyenBayrak) {
   console.error(`HATA  bilinmeyen seçenek: ${bilinmeyenBayrak}`);
   process.exit(1);
 }
-const kokArg = args.find((a, i) => a !== "--bugun" && !(bugunIndeks >= 0 && i === bugunIndeks + 1));
+const kokArg = args.find(
+  (a, i) => a !== "--bugun" && a !== "--public" &&
+    !(bugunIndeks >= 0 && i === bugunIndeks + 1) &&
+    !(publicIndeks >= 0 && i === publicIndeks + 1),
+);
+const publicArg = publicIndeks >= 0 ? args[publicIndeks + 1] : undefined;
+if (publicIndeks >= 0 && (!publicArg || publicArg.startsWith("--"))) {
+  console.error("HATA  --public: dizin gerekli.");
+  process.exit(1);
+}
+const publicDizini = path.resolve(publicArg ?? "public");
 let bugun = bugunIndeks >= 0 ? args[bugunIndeks + 1] : undefined;
 if (bugunIndeks >= 0 && !/^\d{4}-\d{2}-\d{2}$/.test(bugun ?? "")) {
   console.error("HATA  --bugun: YYYY-MM-DD biçiminde tarih gerekli.");
@@ -89,6 +100,7 @@ function linkAnahtari(link: string) {
   }
 }
 const linkler = new Map<string, string>();
+const vitrinler = new Map<number, string[]>();
 for (const dosya of dosyalar) {
   const ham = fs.readFileSync(dosya, "utf8");
   let deger: unknown;
@@ -106,6 +118,19 @@ for (const dosya of dosyalar) {
         bildir("HATA", dosya, `${i.path.join(".") || "ilan"}: ${i.message}`);
     if (deger && typeof deger === "object") {
       const ilan = deger as Record<string, unknown>;
+      const gorselSonucu = ilanSemasi.shape.gorsel.safeParse(ilan.gorsel);
+      if (gorselSonucu.success && gorselSonucu.data) {
+        const gorselYolu = path.join(publicDizini, gorselSonucu.data);
+        if (!fs.existsSync(gorselYolu) || !fs.statSync(gorselYolu).isFile())
+          bildir("HATA", dosya, `gorsel dosyası bulunamadı: ${gorselYolu}`);
+        else if (fs.statSync(gorselYolu).size > 500 * 1024)
+          bildir("UYARI", dosya, "gorsel 500 KB'tan büyük, sayfayı yavaşlatır");
+      }
+      if (ilan.vitrin === 1 || ilan.vitrin === 2) {
+        const oncekiler = vitrinler.get(ilan.vitrin) ?? [];
+        oncekiler.push(dosya);
+        vitrinler.set(ilan.vitrin, oncekiler);
+      }
       const ust = path.dirname(path.relative(kok, dosya));
       if (typeof ilan.bolum === "string" && ust !== "." && ilan.bolum !== path.basename(ust))
         bildir("HATA", dosya, `bolum klasör adıyla aynı olmalı (${path.basename(ust)}).`);
@@ -132,5 +157,10 @@ for (const dosya of dosyalar) {
   for (const { ifade, desen } of bayrakDesenleri)
     if (desen.test(metin)) bildir("HATA", dosya, `kırmızı bayrak ifade bulundu: "${ifade}".`);
 }
+for (const [vitrin, ilanlar] of vitrinler)
+  for (const dosya of ilanlar)
+    for (const diger of ilanlar)
+      if (dosya !== diger)
+        bildir("HATA", dosya, `vitrin ${vitrin} başka ilanda da kullanılıyor: ${path.relative(process.cwd(), diger)}`);
 console.log(`${dosyalar.length} dosya tarandı, ${hatalar} hata, ${uyarilar} uyarı.`);
 process.exitCode = hatalar ? 1 : 0;

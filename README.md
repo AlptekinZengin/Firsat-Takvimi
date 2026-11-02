@@ -11,7 +11,11 @@ Kural: Öğrencinin para ödediği hiçbir ilan siteye girmez (başvuru, kayıt,
 - `ilanlar/<bölüm-slug>/`: YAML ilan dosyaları
 - `scripts/kontrol.ts`: ilan doğrulama betiği
 
-İlanlarda `baslik`, `bolum`, `duzenleyen`, `veren_etiketi`, `son_basvuru`, `kimler`, `on_lisans`, `yer`, `basvuru_linki` ve `eklenme_tarihi` zorunludur. `etkinlik_tarihi`, `son_kontrol` ve `ornek` isteğe bağlıdır. Tarihler tırnaklı `YYYY-MM-DD` biçiminde yazılır.
+İlanlarda `baslik`, `bolum`, `duzenleyen`, `veren_etiketi`, `son_basvuru`, `kimler`, `on_lisans`, `yer`, `basvuru_linki` ve `eklenme_tarihi` zorunludur. `etkinlik_tarihi`, `son_kontrol`, `ornek`, `gorsel` ve `vitrin` isteğe bağlıdır. Tarihler tırnaklı `YYYY-MM-DD` biçiminde yazılır.
+
+`gorsel`, kurumun kendi afişinin `public/` altındaki yoludur; `public/` öneki yazılmaz (ör. `gorseller/yarismalar/teknofest-2027.webp`). Yol `gorseller/` ile başlar; uzantı öncesinde yalnız küçük harf a-z, rakam, `-`, `_`, `/` içerir ve `.png`, `.jpg`, `.jpeg` ya da `.webp` ile biter. `..`, ters bölü, baştaki `/` ve HTTP adresleri kabul edilmez. Dosya mevcut olmalıdır; 500 KB üzerindeki görseller uyarı verir. Kontrol betiğinde `--public <dizin>` ile varsayılan çalışma dizinindeki `public` yerine başka bir dizin seçilebilir.
+
+`vitrin`, ana sayfadaki kayan vitrinin etkinlik slaytı sırasıdır: sayı olarak yalnız `1` veya `2` yazılır. Vitrindeki ilanın `gorsel` alanı zorunludur ve aynı vitrin numarası birden fazla ilanda kullanılamaz. `son_kontrol` sayfaya aktarılan veride korunur.
 
 ## Komutlar
 

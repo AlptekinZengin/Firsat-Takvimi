@@ -35,10 +35,24 @@ export const ilanSemasi = z
       }, "https:// ile başlayan, kullanıcı bilgisi içermeyen geçerli bir link olmalı"),
     eklenme_tarihi: tarih,
     son_kontrol: tarih.optional(),
+    gorsel: z
+      .string()
+      .regex(
+        /^gorseller\/[a-z0-9_/-]+\.(png|jpg|jpeg|webp)$/,
+        "gorseller/ ile başlayan, yalnız küçük harf, rakam, -, _ ve / içeren, .png, .jpg, .jpeg ya da .webp ile biten bir yol olmalı",
+      )
+      .optional(),
+    vitrin: z.union([z.literal(1), z.literal(2)]).optional(),
     ornek: z.boolean().optional(),
   })
   .strict()
   .superRefine((ilan, ctx) => {
+    if (ilan.vitrin !== undefined && !ilan.gorsel)
+      ctx.addIssue({
+        code: "custom",
+        path: ["gorsel"],
+        message: "vitrindeki ilanın görseli olmalı",
+      });
     const secenekler = (maddiBolumler as readonly string[]).includes(ilan.bolum)
       ? kurumVerenEtiketleri
       : digerVerenEtiketleri;
@@ -50,4 +64,4 @@ export const ilanSemasi = z
       });
   });
 export type Ilan = z.infer<typeof ilanSemasi>;
-export type IlanGorunur = Omit<Ilan, "eklenme_tarihi" | "son_kontrol"> & { id: string };
+export type IlanGorunur = Omit<Ilan, "eklenme_tarihi"> & { id: string };

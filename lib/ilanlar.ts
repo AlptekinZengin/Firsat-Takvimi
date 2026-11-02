@@ -19,7 +19,7 @@ export function ilanlariGetir(): IlanGorunur[] {
         );
       const klasor = path.basename(path.dirname(dosya));
       if (sonuc.data.bolum !== klasor) throw new Error(`bolum klasör adıyla aynı olmalı (${klasor}).`);
-      const { eklenme_tarihi: _eklenme, son_kontrol: _kontrol, ...gorunur } = sonuc.data;
+      const { eklenme_tarihi: _eklenme, ...gorunur } = sonuc.data;
       return {
         ...gorunur,
         id: path
