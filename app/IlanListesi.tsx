@@ -135,7 +135,7 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
               <h2 id={`${g.id}-baslik`}>{g.ad}</h2>
               <small>{grupNotu(g, bugun)}</small>
             </div>
-            <div className={g.bicim === "kart" ? "izg" : g.bicim === "satir" ? "liste kutu" : ""}>
+            <div className={g.bicim === "kart" ? "izg" : ""}>
               {g.ilanlar.map((i) => (
                 <IlanKarti
                   key={i.id} ilan={i} bugun={bugun} bicim={g.bicim}

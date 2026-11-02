@@ -43,7 +43,7 @@ export function tarihGruplari(ilanlar: IlanGorunur[], bugun: string) {
     {
       ad: "Bu ay",
       id: "bu-ay",
-      bicim: "satir" as const,
+      bicim: "kart" as const,
       bas: gunEkle(gelecekPazar, 1),
       son: aySonu,
       ilanlar: kalan.filter(i => i.son_basvuru > gelecekPazar && i.son_basvuru <= aySonu),
@@ -51,7 +51,7 @@ export function tarihGruplari(ilanlar: IlanGorunur[], bugun: string) {
     {
       ad: "Daha ileri",
       id: "daha-ileri",
-      bicim: "satir" as const,
+      bicim: "kart" as const,
       bas: ileri[0]?.son_basvuru,
       son: ileri.at(-1)?.son_basvuru,
       ilanlar: ileri,
@@ -89,5 +89,5 @@ export function grupNotu(grup: GrupOzeti, bugun: string) {
     return `Son gün: ${gunAdi(grup.bas!)}, ${kisaTarih(grup.bas!, yilli)}`;
   }
   const aralik = aralikYaz(grup.bas!, grup.son!, bugun);
-  return grup.bicim === "satir" ? `${aralik} · liste görünümü` : `${aralik} · ${grup.ilanlar.length} ilan`;
+  return `${aralik} · ${grup.ilanlar.length} ilan`;
 }
