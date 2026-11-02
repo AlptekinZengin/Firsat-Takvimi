@@ -1,17 +1,19 @@
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { bolumler } from "@/lib/bolumler";
 import type { IlanGorunur } from "@/lib/ilan-sema";
-import { gunFarki, istanbulBugunu, tarihYaz } from "@/lib/tarih";
+import { istanbulBugunu } from "@/lib/tarih";
+import { IlanKarti, bolumSunumlari } from "./IlanKarti";
+import { gunEkle, grupNotu, tarihGruplari } from "./ilan-gruplari";
 
-const sekmeler = [{ slug: "tum", ad: "Tümü" }, ...bolumler];
+type IlanListesiProps = { ilanlar: IlanGorunur[]; derlemeGunu: string };
 
-export function IlanListesi({ ilanlar, derlemeGunu }: { ilanlar: IlanGorunur[]; derlemeGunu: string }) {
-  const [sekme, setSekme] = useState("tum");
-  const [onLisans, setOnLisans] = useState(false);
-  // Sunucu HTML'iyle aynı değerle başlar (hydration uyumsuzluğu olmasın), sonra gerçek güne geçer.
+export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
+  const [bolum, setBolum] = useState("");
+  const [arama, setArama] = useState("");
+  // İlk çizim sunucuyla aynı günü kullanır; tarayıcıda İstanbul gününe geçilir.
   const [bugun, setBugun] = useState(derlemeGunu);
-
   useEffect(() => {
     const guncelle = () => setBugun(istanbulBugunu());
     guncelle();
@@ -20,85 +22,118 @@ export function IlanListesi({ ilanlar, derlemeGunu }: { ilanlar: IlanGorunur[]; 
   }, []);
 
   const acikIlanlar = useMemo(
-    () =>
-      ilanlar
-        .filter((i) => i.son_basvuru >= bugun && (!onLisans || i.on_lisans))
-        .sort((a, b) => a.son_basvuru.localeCompare(b.son_basvuru) || a.baslik.localeCompare(b.baslik, "tr")),
-    [ilanlar, bugun, onLisans],
+    () => ilanlar
+      .filter((i) => i.son_basvuru >= bugun)
+      .sort((a, b) => (
+        a.son_basvuru.localeCompare(b.son_basvuru) || a.baslik.localeCompare(b.baslik, "tr")
+      )),
+    [ilanlar, bugun],
   );
-  const gorunenler = sekme === "tum" ? acikIlanlar : acikIlanlar.filter((i) => i.bolum === sekme);
+  const sorgu = arama.trim().toLocaleLowerCase("tr");
+  const gorunenler = acikIlanlar.filter((i) => (
+    (!bolum || i.bolum === bolum) &&
+    (!sorgu || [i.baslik, i.duzenleyen, i.kimler, i.yer].some((metin) => (
+      metin.toLocaleLowerCase("tr").includes(sorgu)
+    )))
+  ));
+  const gruplar = tarihGruplari(gorunenler, bugun);
+  const pazar = gunEkle(bugun, (7 - new Date(`${bugun}T00:00:00Z`).getUTCDay()) % 7);
 
   return (
-    <main className="sayfa">
-      <header className="ust">
-        <h1>Fırsat Takvimi</h1>
-        <p>Burs, staj, hackathon ve yarışmalar</p>
+    <main className="kap">
+      <nav aria-label="Ana gezinme">
+        <a className="logo" href="/">
+          <img src="/3d/spiral.png" alt="" />Fırsat Takvimi
+        </a>
+        <div className="nl">
+          <a href="#bolumler">Bölümler</a>
+          <a href="#guven">Nasıl kontrol ediyoruz?</a>
+          <a className="b" href="#ilanlar">Bu hafta kapananlar</a>
+        </div>
+      </nav>
+      <header className="hero">
+        <div className="sol">
+          <div className="rozet">
+            <i />Bu hafta {acikIlanlar.filter((i) => i.son_basvuru <= pazar).length} başvuru kapanıyor
+          </div>
+          <h1>Fırsatı gör, <em>son günü</em> kaçırma.</h1>
+          <p>
+            Üniversite öğrencilerine açık burs, staj, hackathon, yarışma ve etkinlikler tek takvimde.
+            Hepsi ücretsiz, hepsi düzenleyenin kendi sayfasından.
+          </p>
+        </div>
+        <div className="vitrin-yeri" />
       </header>
-
-      <div className="sekme-kaydir" role="group" aria-label="İlan bölümleri">
-        {sekmeler.map((b) => {
-          const adet =
-            b.slug === "tum" ? acikIlanlar.length : acikIlanlar.filter((i) => i.bolum === b.slug).length;
-          return (
-            <button
-              key={b.slug}
-              type="button"
-              aria-pressed={sekme === b.slug}
-              className={`sekme ${sekme === b.slug ? "secili" : ""}`}
-              onClick={() => setSekme(b.slug)}
-            >
-              {b.ad} ({adet})
-            </button>
-          );
-        })}
+      <form className="ara kutu" role="search" onSubmit={(e) => e.preventDefault()}>
+        <label className="sr-only" htmlFor="arama">İlanlarda ara</label>
+        <input
+          id="arama"
+          type="search"
+          value={arama}
+          onChange={(e) => setArama(e.target.value)}
+          placeholder="⌕ Ne arıyorsun? Staj, burs, kurum adı, şehir…"
+        />
+        <label className="sr-only" htmlFor="bolum">Bölüm</label>
+        <select id="bolum" value={bolum} onChange={(e) => setBolum(e.target.value)}>
+          <option value="">Bölüm: Tümü</option>
+          {bolumler.map((b) => (
+            <option key={b.slug} value={b.slug}>{bolumSunumlari[b.slug].ad}</option>
+          ))}
+        </select>
+        <button type="submit">Bul</button>
+      </form>
+      <div className="bolum" id="bolumler" role="group" aria-label="İlan bölümleri">
+        {bolumler.map((b) => (
+          <button
+            type="button"
+            key={b.slug}
+            className={`bl ${bolum === b.slug ? "secili" : ""}`}
+            aria-pressed={bolum === b.slug}
+            onClick={() => setBolum(bolum === b.slug ? "" : b.slug)}
+          >
+            <img src={`/3d/${bolumSunumlari[b.slug].nesne}.png`} alt="" />
+            <b>{bolumSunumlari[b.slug].ad}</b>
+            <span>{acikIlanlar.filter((i) => i.bolum === b.slug).length} açık</span>
+          </button>
+        ))}
       </div>
-
-      <label className="filtre">
-        <input type="checkbox" checked={onLisans} onChange={(e) => setOnLisans(e.target.checked)} /> Yalnız ön
-        lisansa açık olanlar
-      </label>
-
-      {gorunenler.length ? (
-        <section className="kart-listesi" aria-label="Açık ilanlar">
-          {gorunenler.map((i) => {
-            const kalan = gunFarki(i.son_basvuru, bugun);
-            return (
-              <article className="kart" key={i.id}>
-                <div className="kart-ust">
-                  <div>
-                    <h2>{i.baslik}</h2>
-                    <p className="duzenleyen">{i.duzenleyen}</p>
-                  </div>
-                  {i.ornek && <span className="ornek">Örnek ilan</span>}
-                </div>
-                <p className="son-tarih">
-                  <strong>Son başvuru:</strong> {tarihYaz(i.son_basvuru)}{" "}
-                  <span>· {kalan === 0 ? "Bugün son gün" : `${kalan} gün kaldı`}</span>
-                </p>
-                {i.etkinlik_tarihi && (
-                  <p>
-                    <strong>Etkinlik tarihi:</strong> {tarihYaz(i.etkinlik_tarihi)}
-                  </p>
-                )}
-                <p>{i.kimler}</p>
-                <div className="etiketler">
-                  {sekme === "tum" && <span>{bolumler.find((b) => b.slug === i.bolum)?.ad}</span>}
-                  <span>{i.veren_etiketi}</span>
-                  {i.on_lisans && <span>Ön lisans</span>}
-                  <span>{i.yer}</span>
-                </div>
-                <a className="basvuru" href={i.basvuru_linki} target="_blank" rel="noopener noreferrer">
-                  Başvur
-                </a>
-              </article>
-            );
-          })}
-        </section>
-      ) : (
-        <p className="bos">Bu bölümde şu an açık ilan yok.</p>
-      )}
-
-      <footer>Site başvuru almaz; Başvur düğmesi düzenleyenin kendi sayfasına götürür.</footer>
+      <div id="ilanlar" aria-live="polite">
+        {gruplar.filter((g) => g.ilanlar.length).map((g) => (
+          <section key={g.id} id={g.id} aria-labelledby={`${g.id}-baslik`}>
+            <div className="bas">
+              <h2 id={`${g.id}-baslik`}>{g.ad}</h2>
+              <small>{grupNotu(g, bugun)}</small>
+            </div>
+            <div className={g.bicim === "kart" ? "izg" : g.bicim === "satir" ? "liste kutu" : ""}>
+              {g.ilanlar.map((i) => (
+                <IlanKarti key={i.id} ilan={i} bugun={bugun} bicim={g.bicim} />
+              ))}
+            </div>
+          </section>
+        ))}
+        {!gorunenler.length && (
+          <p className="bos kutu">
+            {sorgu ? "Aramana uyan açık ilan yok." : "Bu bölümde şu an açık ilan yok."}
+          </p>
+        )}
+      </div>
+      <section className="guv kutu" id="guven" aria-labelledby="guven-baslik">
+        <div className="bk"><img src="/3d/kalkan.png" alt="" /></div>
+        <h2 id="guven-baslik">Burada reklam yok, ücretli ilan yok.</h2>
+        <div>
+          <h3>Resmi sayfa</h3>
+          <p>Başvur düğmesi her zaman düzenleyenin kendi sayfasına gider.</p>
+        </div>
+        <div>
+          <h3>Ücretsiz</h3>
+          <p>Başvuru ücreti, IBAN ya da kart isteyen ilan siteye girmez.</p>
+        </div>
+        <div>
+          <h3>Düzenli kontrol</h3>
+          <p>Her ilanın son kontrol tarihi kartında yazar. Sıra yalnız son tarihe göre.</p>
+        </div>
+      </section>
+      <footer>3D nesneler: Microsoft Fluent Emoji (MIT).</footer>
     </main>
   );
 }
