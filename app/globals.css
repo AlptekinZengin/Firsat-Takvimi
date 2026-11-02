@@ -59,8 +59,6 @@ nav { display: flex; align-items: center; justify-content: space-between; min-he
 .vt-ily .alt { font-size: 17px; margin-top: 16px; }
 .vt-ily .son { font-size: 17px; font-weight: 600; color: white; margin-top: 12px; }
 .vt-ily .son em { font-style: normal; color: var(--tur); }
-.vt-ily .gv { margin-top: 18px; color: var(--nane); }
-.vt-ily .gv .s { color: #9FAACB; }
 .vt-ily .btn { display: inline-block; margin-top: 18px; padding: 13px 28px; }
 .vt-afis.afis { aspect-ratio: 16 / 10; border: 2px solid var(--m); border-radius: 16px; box-shadow: 6px 6px 0 #060A16; transform: rotate(-2deg); }
 .vt-ok { position: absolute; top: calc(50% - 40px); width: 44px; height: 44px; border-radius: 50%; background: white; color: var(--m); border: 2px solid var(--m); box-shadow: 2px 2px 0 var(--m); font-size: 24px; font-weight: 800; line-height: 1; padding: 0 0 3px; z-index: 2; }
@@ -140,9 +138,6 @@ h3 { overflow-wrap: anywhere; }
 .etk span { border: 1.5px solid var(--m); border-radius: 8px; padding: 4px 10px; font-size: 13.5px; font-weight: 600; }
 
 .kim { font-size: 14px; margin-top: 8px; line-height: 1.35; }
-.gv { display: flex; gap: 16px; font-size: 14px; font-weight: 700; margin-top: 20px; align-items: center; flex-wrap: wrap; }
-.gv img { width: 20px; vertical-align: -4px; margin-right: 4px; }
-.gv .s { color: var(--g); font-weight: 500; }
 .btn { display: block; background: var(--tur); color: var(--m); border: 2px solid var(--m); border-radius: 12px; font-weight: 800; font-size: 17px; padding: 14px; text-align: center; box-shadow: 3px 3px 0 var(--m); }
 .btn:hover { background: var(--sari); }
 .son-tarih { font-size: 14px; }
@@ -150,16 +145,15 @@ h3 { overflow-wrap: anywhere; }
 
 
 
-.one .gv { margin: 20px 0; }
 .one .btn { margin-top: auto; }
+.one .geri { margin-bottom: 20px; }
+.kart .kim { margin-bottom: 16px; }
 .izg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
 .kart { background: white; overflow: hidden; display: flex; flex-direction: column; }
 .kart .afis { height: 200px; flex-shrink: 0; border-bottom: 2px solid var(--m); padding: 22px; }
 .kart .bilgi { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .kart h3 { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
 .kart .d { font-size: 14.5px; margin-top: 3px; }
-.kart .gv { font-size: 13px; margin: 16px 0; gap: 12px; }
-.kart .gv img { width: 17px; }
 .kart .afis .u { opacity: .75; }
 
 .kart .btn { margin-top: auto; font-size: 15px; padding: 11px; }

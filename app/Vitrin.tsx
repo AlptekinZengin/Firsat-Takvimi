@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { IlanGorunur } from "@/lib/ilan-sema";
 import { gunFarki } from "@/lib/tarih";
-import { Basvur, GuvenSatiri, bolumSunumlari, kontrolYaz } from "./IlanKarti";
+import { Basvur, bolumSunumlari } from "./IlanKarti";
 import { gunEkle } from "./ilan-gruplari";
 
 type VitrinProps = { ilanlar: IlanGorunur[]; bugun: string };
@@ -155,7 +155,6 @@ export function Vitrin({ ilanlar, bugun }: VitrinProps) {
                   <p className="son">
                     Son gün: {sonGunYaz(ilan.son_basvuru, bugun)} · <em>{kalanYaz(kalan)}</em>
                   </p>
-                  <GuvenSatiri kontrol={kontrolYaz(ilan, bugun)} />
                   <Basvur ilan={ilan} />
                 </div>
                 <div className="afis gorselli vt-afis" style={{ background: `var(--${bolum.renk})` }}>

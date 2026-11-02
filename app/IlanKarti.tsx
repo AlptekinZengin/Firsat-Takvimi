@@ -15,24 +15,6 @@ export const bolumSunumlari: Record<string, BolumSunumu> = {
   "gonulluluk-genclik": { ad: "Gönüllülük", nesne: "kalp", renk: "nane" },
 };
 
-export function kontrolYaz(ilan: IlanGorunur, bugun: string) {
-  if (!ilan.son_kontrol) return null;
-  const fark = gunFarki(bugun, ilan.son_kontrol);
-  if (fark === 0) return "bugün";
-  if (fark === 1) return "dün";
-  return fark > 1 ? `${fark} gün önce` : tarihYaz(ilan.son_kontrol);
-}
-
-export function GuvenSatiri({ kontrol }: { kontrol: string | null }) {
-  return (
-    <div className="gv">
-      <span><img src="/3d/tik.png" alt="" />Resmi sayfa</span>
-      <span><img src="/3d/tik.png" alt="" />Ücretsiz</span>
-      {kontrol && <span className="s">Son kontrol {kontrol}</span>}
-    </div>
-  );
-}
-
 export function Basvur({ ilan, buyuk = false }: { ilan: IlanGorunur; buyuk?: boolean }) {
   return (
     <a className="btn" href={ilan.basvuru_linki} target="_blank" rel="noopener noreferrer">
@@ -52,7 +34,6 @@ type IlanKartiProps = {
 export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
   const bolum = bolumSunumlari[ilan.bolum];
   const kalan = gunFarki(ilan.son_basvuru, bugun);
-  const kontrol = kontrolYaz(ilan, bugun);
   const renk = { background: `var(--${bolum.renk})` };
   const kimler = ilan.kimler + (
     ilan.on_lisans && !ilan.kimler.toLocaleLowerCase("tr").includes("ön lisans")
@@ -90,7 +71,7 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
         </div>
         <div className="son-tarih">
           <time dateTime={ilan.son_basvuru}>{kisaTarih}</time>
-          <small>{kalan} gün kaldı{kontrol && ` · kontrol ${kontrol}`}</small>
+          <small>{kalan} gün kaldı</small>
         </div>
         <Basvur ilan={ilan} />
       </article>
@@ -149,7 +130,6 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
             <div><b>{kalan} gün</b><span>kaldı</span></div>
           </div>
         )}
-        <GuvenSatiri kontrol={kontrol} />
         <Basvur ilan={ilan} buyuk={buyuk} />
       </div>
     </article>
