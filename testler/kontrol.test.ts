@@ -44,6 +44,20 @@ function gorselOrnegi(alanlar: string[], boyut?: number) {
   return { ilanDizini, publicDizini };
 }
 
+test("ek_bolumler geçerli slug kabul eder; geçersiz slug, ana bölüm ve üçten fazlasını reddeder", () => {
+  for (const [bolumler, beklenenKod] of [
+    [["yurt-disi-degisim"], 0],
+    [["gecersiz-bolum"], 1],
+    [["stajlar"], 1],
+    [["burslar", "yarismalar", "hackathonlar", "yurt-disi-degisim"], 1],
+  ] as const) {
+    const { ilanDizini } = gorselOrnegi([`ek_bolumler: ${JSON.stringify(bolumler)}`]);
+    const { kod, cikti } = kontrol(ilanDizini);
+    assert.equal(kod, beklenenKod, cikti);
+    if (beklenenKod) assert.match(cikti, /HATA .*ek_bolumler/);
+  }
+});
+
 test("görsel dosyası mevcutsa hata yok; --public ve --bugun birlikte çalışır", () => {
   const { ilanDizini, publicDizini } = gorselOrnegi(["gorsel: gorseller/afis.webp\nvitrin: 1"], 3);
   const { kod, cikti } = kontrol(ilanDizini, ["--public", publicDizini]);

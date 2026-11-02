@@ -37,7 +37,7 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
   );
   const sorgu = arama.trim().toLocaleLowerCase("tr");
   const gorunenler = acikIlanlar.filter((i) => (
-    (!bolum || i.bolum === bolum) &&
+    (!bolum || i.bolum === bolum || i.ek_bolumler?.includes(bolum)) &&
     (!sorgu || [i.baslik, i.duzenleyen, i.kimler, i.yer].some((metin) => (
       metin.toLocaleLowerCase("tr").includes(sorgu)
     )))
@@ -96,7 +96,7 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           >
             <img src={`/3d/${bolumSunumlari[b.slug].nesne}.png`} alt="" />
             <b>{bolumSunumlari[b.slug].ad}</b>
-            <span>{acikIlanlar.filter((i) => i.bolum === b.slug).length} açık</span>
+            <span>{acikIlanlar.filter((i) => i.bolum === b.slug || i.ek_bolumler?.includes(b.slug)).length} açık</span>
           </button>
         ))}
       </div>

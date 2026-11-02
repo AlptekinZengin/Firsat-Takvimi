@@ -10,10 +10,13 @@ const tarih = z
     return nesne.getUTCFullYear() === yil && nesne.getUTCMonth() === ay - 1 && nesne.getUTCDate() === gun;
   }, "gerçek bir takvim tarihi olmalı");
 
+const bolumSlug = z.enum(bolumler.map((b) => b.slug) as [string, ...string[]]);
+
 export const ilanSemasi = z
   .object({
     baslik: z.string().min(1).max(150),
-    bolum: z.enum(bolumler.map((b) => b.slug) as [string, ...string[]]),
+    bolum: bolumSlug,
+    ek_bolumler: z.array(bolumSlug).max(3).optional(),
     duzenleyen: z.string().min(1).max(120),
     veren_etiketi: z.string().min(1),
     son_basvuru: tarih,
@@ -47,6 +50,12 @@ export const ilanSemasi = z
   })
   .strict()
   .superRefine((ilan, ctx) => {
+    if (ilan.ek_bolumler?.includes(ilan.bolum))
+      ctx.addIssue({
+        code: "custom",
+        path: ["ek_bolumler"],
+        message: "ana bölüm ek_bolumler içinde olamaz",
+      });
     if (ilan.vitrin !== undefined && !ilan.gorsel)
       ctx.addIssue({
         code: "custom",
