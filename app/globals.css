@@ -267,3 +267,6 @@ h3 { overflow-wrap: anywhere; }
   .sat .son-tarih, .sat .btn { grid-column: 2; }
 }
 .btn.kapali-btn:hover { background: var(--z); }
+
+.sayfa-alti { margin-top: 56px; padding-top: 18px; border-top: 1px solid #d9d4c7; font-size: 13px; line-height: 1.5; color: var(--g); }
+.sayfa-alti a { color: inherit; text-decoration: underline; }

@@ -164,6 +164,10 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           </div>
         </section>
       )}
+      <footer className="sayfa-alti">
+        <b>Fırsat Takvimi</b> · İlanlar düzenleyenlerin kendi duyurularından derlenir; görseller ilgili kurumlarındır. Hata bildirmek ya da kaldırma isteği için:{" "}
+        <a href="mailto:iletisim@firsat-takvimi.com">iletisim@firsat-takvimi.com</a>
+      </footer>
     </main>
   );
 }
