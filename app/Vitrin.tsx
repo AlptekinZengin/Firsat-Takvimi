@@ -109,9 +109,22 @@ export function Vitrin({ ilanlar, bugun }: VitrinProps) {
                           {liste.map((i) => {
                             const bolum = bolumSunumlari[i.bolum];
                             return (
-                              <li key={i.id} title={i.baslik} style={{ background: `var(--${bolum.renk})` }}>
-                                <img src={`/3d/${bolum.nesne}.png`} alt="" />
-                                <b>{i.baslik.replace(/^Örnek\s+/i, "")}</b>
+                              <li key={i.id}>
+                                <a
+                                  href={`#ilan-${i.id.replaceAll("/", "-")}`}
+                                  title={i.baslik}
+                                  aria-label={`${i.baslik}, ${i.duzenleyen}`}
+                                  style={{ background: `var(--${bolum.renk})` }}
+                                >
+                                  {i.gorsel ? (
+                                    <>
+                                      <img className="bulanik" src={`/${i.gorsel}`} alt="" loading="lazy" />
+                                      <img className="asil" src={`/${i.gorsel}`} alt="" loading="lazy" />
+                                    </>
+                                  ) : (
+                                    <img className="nesne" src={`/3d/${bolum.nesne}.png`} alt="" loading="lazy" />
+                                  )}
+                                </a>
                               </li>
                             );
                           })}

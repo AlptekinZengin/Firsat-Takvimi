@@ -46,9 +46,10 @@ type IlanKartiProps = {
   ilan: IlanGorunur;
   bugun: string;
   bicim: "buyuk" | "kart" | "satir";
+  id?: string;
 };
 
-export function IlanKarti({ ilan, bugun, bicim }: IlanKartiProps) {
+export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
   const bolum = bolumSunumlari[ilan.bolum];
   const kalan = gunFarki(ilan.son_basvuru, bugun);
   const kontrol = kontrolYaz(ilan, bugun);
@@ -72,7 +73,7 @@ export function IlanKarti({ ilan, bugun, bicim }: IlanKartiProps) {
 
   if (bicim === "satir") {
     return (
-      <article className="sat">
+      <article id={id} className="sat">
         <div className="ik" style={renk}>
           <img src={`/3d/${bolum.nesne}.png`} alt="" />
         </div>
@@ -93,7 +94,7 @@ export function IlanKarti({ ilan, bugun, bicim }: IlanKartiProps) {
   const kapakBasligi = ilan.baslik.replace(/^Örnek\s+/i, "");
 
   return (
-    <article className={buyuk ? "one kutu" : "kart kutu"}>
+    <article id={id} className={buyuk ? "one kutu" : "kart kutu"}>
       <div className={`afis ${ilan.gorsel ? "gorselli" : "otomatik"}`} style={renk}>
         {ilan.gorsel ? (
           <>

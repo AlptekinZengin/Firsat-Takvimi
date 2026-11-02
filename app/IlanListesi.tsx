@@ -38,6 +38,12 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
     )))
   ));
   const gruplar = tarihGruplari(gorunenler, bugun);
+  const ilkGruplar = new Map<string, string>();
+  for (const grup of gruplar) {
+    for (const ilan of grup.ilanlar) {
+      if (!ilkGruplar.has(ilan.id)) ilkGruplar.set(ilan.id, grup.id);
+    }
+  }
 
   return (
     <main className="kap">
@@ -94,7 +100,10 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
             </div>
             <div className={g.bicim === "kart" ? "izg" : g.bicim === "satir" ? "liste kutu" : ""}>
               {g.ilanlar.map((i) => (
-                <IlanKarti key={i.id} ilan={i} bugun={bugun} bicim={g.bicim} />
+                <IlanKarti
+                  key={i.id} ilan={i} bugun={bugun} bicim={g.bicim}
+                  id={ilkGruplar.get(i.id) === g.id ? `ilan-${i.id.replaceAll("/", "-")}` : undefined}
+                />
               ))}
             </div>
           </section>
