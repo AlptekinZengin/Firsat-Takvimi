@@ -15,7 +15,7 @@ export const bolumSunumlari: Record<string, BolumSunumu> = {
   "gonulluluk-genclik": { ad: "Gönüllülük", nesne: "kalp", renk: "nane" },
 };
 
-function kontrolYaz(ilan: IlanGorunur, bugun: string) {
+export function kontrolYaz(ilan: IlanGorunur, bugun: string) {
   if (!ilan.son_kontrol) return null;
   const fark = gunFarki(bugun, ilan.son_kontrol);
   if (fark === 0) return "bugün";
@@ -23,7 +23,7 @@ function kontrolYaz(ilan: IlanGorunur, bugun: string) {
   return fark > 1 ? `${fark} gün önce` : tarihYaz(ilan.son_kontrol);
 }
 
-function GuvenSatiri({ kontrol }: { kontrol: string | null }) {
+export function GuvenSatiri({ kontrol }: { kontrol: string | null }) {
   return (
     <div className="gv">
       <span><img src="/3d/tik.png" alt="" />Resmi sayfa</span>
@@ -33,7 +33,7 @@ function GuvenSatiri({ kontrol }: { kontrol: string | null }) {
   );
 }
 
-function Basvur({ ilan, buyuk = false }: { ilan: IlanGorunur; buyuk?: boolean }) {
+export function Basvur({ ilan, buyuk = false }: { ilan: IlanGorunur; buyuk?: boolean }) {
   return (
     <a className="btn" href={ilan.basvuru_linki} target="_blank" rel="noopener noreferrer">
       {buyuk ? "Resmi sayfada başvur" : "Başvur"}

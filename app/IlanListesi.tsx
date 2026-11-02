@@ -5,6 +5,7 @@ import { bolumler } from "@/lib/bolumler";
 import type { IlanGorunur } from "@/lib/ilan-sema";
 import { istanbulBugunu } from "@/lib/tarih";
 import { IlanKarti, bolumSunumlari } from "./IlanKarti";
+import { Vitrin } from "./Vitrin";
 import { grupNotu, tarihGruplari } from "./ilan-gruplari";
 
 type IlanListesiProps = { ilanlar: IlanGorunur[]; derlemeGunu: string };
@@ -50,16 +51,7 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           <a className="b" href="#ilanlar">Bu hafta kapananlar</a>
         </div>
       </nav>
-      <header className="hero">
-        <div className="sol">
-          <h1>Fırsatı gör, <em>son günü</em> kaçırma.</h1>
-          <p>
-            Üniversite öğrencilerine açık burs, staj, hackathon, yarışma ve etkinlikler tek takvimde.
-            Hepsi ücretsiz, hepsi düzenleyenin kendi sayfasından.
-          </p>
-        </div>
-        <div className="vitrin-yeri" />
-      </header>
+      <Vitrin ilanlar={acikIlanlar} bugun={bugun} />
       <form className="ara kutu" role="search" onSubmit={(e) => e.preventDefault()}>
         <label className="sr-only" htmlFor="arama">İlanlarda ara</label>
         <input
