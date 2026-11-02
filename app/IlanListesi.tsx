@@ -12,7 +12,6 @@ type IlanListesiProps = { ilanlar: IlanGorunur[]; derlemeGunu: string };
 
 const menuBaglantilari = [
   { href: "#bolumler", ad: "Bölümler" },
-  { href: "#guven", ad: "Nasıl kontrol ediyoruz?" },
   { href: "#ilanlar", ad: "Bu hafta kapananlar", sinif: "b" },
 ];
 
@@ -124,23 +123,6 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           </p>
         )}
       </div>
-      <section className="guv kutu" id="guven" aria-labelledby="guven-baslik">
-        <div className="bk"><img src="/3d/kalkan.png" alt="" /></div>
-        <h2 id="guven-baslik">Burada reklam yok, ücretli ilan yok.</h2>
-        <div>
-          <h3>Resmi sayfa</h3>
-          <p>Başvur düğmesi her zaman düzenleyenin kendi sayfasına gider.</p>
-        </div>
-        <div>
-          <h3>Ücretsiz</h3>
-          <p>Başvuru ücreti, IBAN ya da kart isteyen ilan siteye girmez.</p>
-        </div>
-        <div>
-          <h3>Düzenli kontrol</h3>
-          <p>Her ilanın son kontrol tarihi kartında yazar. Sıra yalnız son tarihe göre.</p>
-        </div>
-      </section>
-      <footer>3D nesneler: Microsoft Fluent Emoji (MIT).</footer>
     </main>
   );
 }
