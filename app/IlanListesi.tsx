@@ -5,7 +5,7 @@ import { bolumler } from "@/lib/bolumler";
 import type { IlanGorunur } from "@/lib/ilan-sema";
 import { istanbulBugunu } from "@/lib/tarih";
 import { IlanKarti, bolumSunumlari } from "./IlanKarti";
-import { gunEkle, grupNotu, tarihGruplari } from "./ilan-gruplari";
+import { grupNotu, tarihGruplari } from "./ilan-gruplari";
 
 type IlanListesiProps = { ilanlar: IlanGorunur[]; derlemeGunu: string };
 
@@ -37,7 +37,6 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
     )))
   ));
   const gruplar = tarihGruplari(gorunenler, bugun);
-  const pazar = gunEkle(bugun, (7 - new Date(`${bugun}T00:00:00Z`).getUTCDay()) % 7);
 
   return (
     <main className="kap">
@@ -53,9 +52,6 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
       </nav>
       <header className="hero">
         <div className="sol">
-          <div className="rozet">
-            <i />Bu hafta {acikIlanlar.filter((i) => i.son_basvuru <= pazar).length} başvuru kapanıyor
-          </div>
           <h1>Fırsatı gör, <em>son günü</em> kaçırma.</h1>
           <p>
             Üniversite öğrencilerine açık burs, staj, hackathon, yarışma ve etkinlikler tek takvimde.
