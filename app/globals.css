@@ -150,6 +150,9 @@ h3 { overflow-wrap: anywhere; }
 .kart .kim { margin-bottom: 16px; }
 .izg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
 .kart { background: white; overflow: hidden; display: flex; flex-direction: column; }
+.kart.kapali { opacity: .6; filter: grayscale(1); }
+.kapali-rozet { position: absolute; left: 14px; top: 14px; background: var(--m); color: white; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 8px; z-index: 3; }
+.btn.kapali-btn { background: var(--z); box-shadow: none; cursor: default; }
 .kart .afis { height: 200px; flex-shrink: 0; border-bottom: 2px solid var(--m); padding: 22px; }
 .kart .bilgi { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .kart h3 { font-size: 20px; font-weight: 800; letter-spacing: -.01em; }
@@ -263,3 +266,4 @@ h3 { overflow-wrap: anywhere; }
   .sat { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 16px; }
   .sat .son-tarih, .sat .btn { grid-column: 2; }
 }
+.btn.kapali-btn:hover { background: var(--z); }

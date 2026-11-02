@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { bolumler, bolumGruplari } from "@/lib/bolumler";
 import type { IlanGorunur } from "@/lib/ilan-sema";
-import { istanbulBugunu } from "@/lib/tarih";
+import { gunFarki, istanbulBugunu } from "@/lib/tarih";
 import { IlanKarti, bolumSunumlari } from "./IlanKarti";
 import { Vitrin } from "./Vitrin";
 import { grupNotu, tarihGruplari } from "./ilan-gruplari";
@@ -43,6 +43,12 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
       .sort((a, b) => (
         a.son_basvuru.localeCompare(b.son_basvuru) || a.baslik.localeCompare(b.baslik, "tr")
       )),
+    [ilanlar, bugun],
+  );
+  const kapananlar = useMemo(
+    () => ilanlar
+      .filter((i) => i.son_basvuru < bugun && gunFarki(bugun, i.son_basvuru) <= 7)
+      .sort((a, b) => b.son_basvuru.localeCompare(a.son_basvuru)),
     [ilanlar, bugun],
   );
   const sorgu = arama.trim().toLocaleLowerCase("tr");
@@ -145,6 +151,19 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           </p>
         )}
       </div>
+      {kapananlar.length > 0 && (
+        <section aria-labelledby="yeni-kapananlar-baslik">
+          <div className="bas">
+            <h2 id="yeni-kapananlar-baslik">Yeni kapananlar</h2>
+            <small>Son 7 gün</small>
+          </div>
+          <div className="izg">
+            {kapananlar.map((i) => (
+              <IlanKarti key={i.id} ilan={i} bugun={bugun} bicim="kart" kapandi />
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

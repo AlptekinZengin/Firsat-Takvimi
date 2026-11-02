@@ -6,7 +6,7 @@ import os from "node:os";
 import { test } from "node:test";
 
 // Kontrol betiğini örnek klasörle çalıştırır. Gün sabit, böylece örneklerin tarihi eskimez.
-function kontrol(klasor: string, secenekler: string[] = []) {
+function kontrol(klasor: string, secenekler: string[] = [], bugun = "2026-11-02") {
   const sonuc = spawnSync(
     process.execPath,
     [
@@ -15,7 +15,7 @@ function kontrol(klasor: string, secenekler: string[] = []) {
       "scripts/kontrol.ts",
       path.isAbsolute(klasor) ? klasor : path.join("testler", "ornekler", klasor),
       "--bugun",
-      "2026-11-02",
+      bugun,
       ...secenekler,
     ],
     { encoding: "utf8" },
@@ -43,6 +43,21 @@ function gorselOrnegi(alanlar: string[], boyut?: number) {
     fs.writeFileSync(path.join(publicDizini, "gorseller", "afis.webp"), Buffer.alloc(boyut));
   return { ilanDizini, publicDizini };
 }
+
+for (const [bugun, beklenenKod, mesaj] of [
+  ["2027-06-30", 0, "0 hata, 0 uyarı"],
+  ["2027-07-01", 0, "kapandı, 7 gün sonra sitede görünmez"],
+  ["2027-07-07", 0, "kapandı, 1 gün sonra sitede görünmez"],
+  ["2027-07-08", 1, "son_basvuru tarihi geçmiş."],
+] as const)
+  test(`kapanan ilan için yedi günlük sınır: ${bugun}`, () => {
+    const { ilanDizini } = gorselOrnegi([""]);
+    const { kod, cikti } = kontrol(ilanDizini, [], bugun);
+    assert.equal(kod, beklenenKod, cikti);
+    assert.ok(cikti.includes(mesaj), cikti);
+    if (bugun === "2027-07-01" || bugun === "2027-07-07")
+      assert.match(cikti, /1 dosya tarandı, 0 hata, 1 uyarı/);
+  });
 
 test("ek_bolumler geçerli slug kabul eder; geçersiz slug, ana bölüm ve üçten fazlasını reddeder", () => {
   for (const [bolumler, beklenenKod] of [

@@ -29,9 +29,10 @@ type IlanKartiProps = {
   bugun: string;
   bicim: "buyuk" | "kart" | "satir";
   id?: string;
+  kapandi?: boolean;
 };
 
-export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
+export function IlanKarti({ ilan, bugun, bicim, id, kapandi = false }: IlanKartiProps) {
   const bolum = bolumSunumlari[ilan.bolum];
   const kalan = gunFarki(ilan.son_basvuru, bugun);
   const renk = { background: `var(--${bolum.renk})` };
@@ -80,7 +81,7 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
 
   const buyuk = bicim === "buyuk";
   const kapakBasligi = ilan.baslik.replace(/^Örnek\s+/i, "");
-  const yaprak = !buyuk && (
+  const yaprak = !kapandi && !buyuk && (
     <time
       className={`yaprak ${ilan.gorsel ? "ici " : ""}${kalan <= 7 ? "acil" : ""}`}
       dateTime={ilan.son_basvuru}
@@ -92,8 +93,9 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
   );
 
   return (
-    <article id={id} className={buyuk ? "one kutu" : "kart kutu"}>
+    <article id={id} className={`${buyuk ? "one kutu" : "kart kutu"}${kapandi ? " kapali" : ""}`}>
       <div className={`afis ${ilan.gorsel ? "gorselli" : "otomatik"}`} style={renk}>
+        {kapandi && <span className="kapali-rozet">Başvuru kapandı</span>}
         {ilan.gorsel ? (
           <>
             <img className="bulanik" src={`/${ilan.gorsel}`} alt="" />
@@ -130,7 +132,7 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
             <div><b>{kalan} gün</b><span>kaldı</span></div>
           </div>
         )}
-        <Basvur ilan={ilan} buyuk={buyuk} />
+        {kapandi ? <span className="btn kapali-btn">Başvuru kapandı</span> : <Basvur ilan={ilan} buyuk={buyuk} />}
       </div>
     </article>
   );

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
 import { ilanSemasi } from "../lib/ilan-sema";
-import { istanbulBugunu } from "../lib/tarih";
+import { gunFarki, istanbulBugunu } from "../lib/tarih";
 const args = process.argv.slice(2);
 const bugunIndeks = args.indexOf("--bugun");
 const publicIndeks = args.indexOf("--public");
@@ -138,8 +138,13 @@ for (const dosya of dosyalar) {
         typeof ilan.son_basvuru === "string" &&
         /^\d{4}-\d{2}-\d{2}$/.test(ilan.son_basvuru) &&
         ilan.son_basvuru < bugun
-      )
-        bildir("HATA", dosya, "son_basvuru tarihi geçmiş.");
+      ) {
+        const gecen = gunFarki(bugun, ilan.son_basvuru);
+        if (gecen <= 7)
+          bildir("UYARI", dosya, `son_basvuru kapandı, ${8 - gecen} gün sonra sitede görünmez.`);
+        else
+          bildir("HATA", dosya, "son_basvuru tarihi geçmiş.");
+      }
       if (typeof ilan.basvuru_linki === "string") {
         const anahtar = linkAnahtari(ilan.basvuru_linki);
         const onceki = linkler.get(anahtar);
