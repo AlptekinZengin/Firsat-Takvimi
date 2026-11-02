@@ -10,6 +10,12 @@ import { grupNotu, tarihGruplari } from "./ilan-gruplari";
 
 type IlanListesiProps = { ilanlar: IlanGorunur[]; derlemeGunu: string };
 
+const menuBaglantilari = [
+  { href: "#bolumler", ad: "Bölümler" },
+  { href: "#guven", ad: "Nasıl kontrol ediyoruz?" },
+  { href: "#ilanlar", ad: "Bu hafta kapananlar", sinif: "b" },
+];
+
 export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
   const [bolum, setBolum] = useState("");
   const [arama, setArama] = useState("");
@@ -52,10 +58,14 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
           <img src="/3d/spiral.png" alt="" />Fırsat Takvimi
         </a>
         <div className="nl">
-          <a href="#bolumler">Bölümler</a>
-          <a href="#guven">Nasıl kontrol ediyoruz?</a>
-          <a className="b" href="#ilanlar">Bu hafta kapananlar</a>
+          {menuBaglantilari.map((b) => <a key={b.href} className={b.sinif} href={b.href}>{b.ad}</a>)}
         </div>
+        <details className="menu">
+          <summary aria-label="Menüyü aç">☰</summary>
+          <div className="nl kutu">
+            {menuBaglantilari.map((b) => <a key={b.href} className={b.sinif} href={b.href}>{b.ad}</a>)}
+          </div>
+        </details>
       </nav>
       <Vitrin ilanlar={acikIlanlar} bugun={bugun} />
       <form className="ara kutu" role="search" onSubmit={(e) => e.preventDefault()}>

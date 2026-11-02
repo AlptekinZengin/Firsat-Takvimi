@@ -24,6 +24,7 @@ nav { display: flex; align-items: center; justify-content: space-between; min-he
 .logo img { width: 40px; }
 .nl { display: flex; gap: 30px; font-size: 16px; font-weight: 600; align-items: center; }
 .nl .b { background: var(--m); color: white; padding: 9px 16px; border-radius: 10px; }
+.menu { display: none; }
 .hero { background: var(--gece); color: white; border-radius: 28px; position: relative; padding: 58px 60px 120px; min-height: 520px; }
 .hero .sol { width: min(340px, 100%); position: relative; }
 .hero h1 { font-size: 46px; line-height: 1.02; font-weight: 800; letter-spacing: -.035em; }
@@ -197,6 +198,9 @@ footer { padding: 34px 0 46px; font-size: 13px; color: var(--g); }
 }
 .yaprak span { display: block; font-size: 26px; font-weight: 800; padding: 2px 0 3px; }
 .yaprak.acil b { background: #C8261B; }
+.bas-satir { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.bas-satir h3 { min-width: 0; }
+.yaprak.ici { position: static; flex-shrink: 0; }
 .geri { display: flex; margin-top: 22px; }
 .geri div {
   background: var(--z); border: 2px solid var(--m); border-radius: 12px;
@@ -224,29 +228,48 @@ footer { padding: 34px 0 46px; font-size: 13px; color: var(--g); }
 }
 @media (max-width: 700px) {
   .kap { width: calc(100% - 32px); }
-  nav { flex-wrap: wrap; padding: 16px 0; }
-  .nl { flex-wrap: wrap; gap: 12px; font-size: 13px; }
-  .hero { padding: 36px 24px 90px; min-height: 0; }
-  .hero h1 { font-size: 48px; }
+  :focus-visible { outline: 3px solid var(--tur); outline-offset: 2px; }
+  nav { flex-wrap: nowrap; padding: 14px 0; position: relative; }
+  .logo { font-size: 20px; }
+  .logo img { width: 34px; }
+  nav > .nl { display: none; }
+  .menu { display: block; position: relative; flex-shrink: 0; }
+  .menu summary { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 2px solid var(--m); border-radius: 12px; background: white; box-shadow: 2px 2px 0 var(--m); font-size: 22px; list-style: none; cursor: pointer; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu .nl { position: absolute; right: 0; top: 52px; z-index: 10; background: white; padding: 10px; flex-direction: column; align-items: stretch; gap: 0; width: max-content; }
+  .menu .nl a { padding: 12px 14px; font-size: 16px; font-weight: 600; }
+  .hero { padding: 28px 20px 84px; min-height: 0; }
+  .hero h1 { font-size: 34px; line-height: 1.02; }
+  .hero p { font-size: 15px; }
   .ara { width: calc(100% - 24px); flex-wrap: wrap; gap: 8px; }
   .ara input { flex-basis: 100%; width: 100%; }
   .ara select { flex: 1; width: 0; }
   .ara input, .ara select, .ara button { padding: 12px; font-size: 14px; }
-  .bolum { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .bl { padding: 10px 4px; }
+  .bolum { display: flex; overflow-x: auto; gap: 10px; scroll-snap-type: x mandatory; padding: 4px 4px 10px; margin-left: -4px; margin-right: -4px; scrollbar-width: none; }
+  .bolum::-webkit-scrollbar { display: none; }
+  .bl { flex: 0 0 96px; scroll-snap-align: start; padding: 10px 6px; }
+  .bl img { width: 44px; }
   .bl b { font-size: 13px; }
-  .bas { flex-direction: column; align-items: flex-start; margin-top: 38px; }
-  h2 { font-size: 30px; }
+  .bas { flex-direction: column; align-items: flex-start; margin-top: 32px; }
+  h2 { font-size: 26px; }
   .bas small { text-align: left; }
   .one, .izg { grid-template-columns: minmax(0, 1fr); }
-  .one .afis { min-height: 300px; border-right: 0; border-bottom: 2px solid var(--m); padding: 22px; }
+  .one .afis { min-height: 260px; border-right: 0; border-bottom: 2px solid var(--m); padding: 22px; }
   .one .afis .nesne { width: 160px; }
-  .one .bilgi { padding: 24px 20px; }
+  .one .bilgi { padding: 20px; }
+  .one h3 { font-size: 26px; }
+  .geri b { font-size: 28px; }
+  .geri { margin-top: 16px; }
+  .kart h3 { font-size: 18px; }
+  .kart .bilgi { padding: 16px 16px 18px; }
+  .kart .afis { height: 180px; }
+  .kim { font-size: 13.5px; }
 
 
   .sat { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 16px; }
   .sat .son-tarih, .sat .btn { grid-column: 2; }
-  .guv { grid-template-columns: minmax(0, 1fr); padding: 26px; gap: 24px; }
+  .guv { grid-template-columns: minmax(0, 1fr); padding: 24px 20px; gap: 24px; }
+  .guv h2 { font-size: 28px; }
   .guv img { margin: 0; width: 120px; }
   .guv img { flex-shrink: 0; }
 }

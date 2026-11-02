@@ -92,6 +92,16 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
 
   const buyuk = bicim === "buyuk";
   const kapakBasligi = ilan.baslik.replace(/^Örnek\s+/i, "");
+  const yaprak = !buyuk && (
+    <time
+      className={`yaprak ${ilan.gorsel ? "ici " : ""}${kalan <= 7 ? "acil" : ""}`}
+      dateTime={ilan.son_basvuru}
+      aria-label={`Son başvuru: ${tarihYaz(ilan.son_basvuru)}, ${kalan} gün kaldı`}
+    >
+      <b>{ay}</b>
+      <span>{tarih.getUTCDate()}</span>
+    </time>
+  );
 
   return (
     <article id={id} className={buyuk ? "one kutu" : "kart kutu"}>
@@ -108,16 +118,7 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
             <img className="nesne" src={`/3d/${bolum.nesne}.png`} alt="" />
           </>
         )}
-        {!buyuk && (
-          <time
-            className={`yaprak ${kalan <= 7 ? "acil" : ""}`}
-            dateTime={ilan.son_basvuru}
-            aria-label={`Son başvuru: ${tarihYaz(ilan.son_basvuru)}, ${kalan} gün kaldı`}
-          >
-            <b>{ay}</b>
-            <span>{tarih.getUTCDate()}</span>
-          </time>
-        )}
+        {!ilan.gorsel && yaprak}
       </div>
       <div className="bilgi">
         {buyuk && (
@@ -128,7 +129,12 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
             {ilan.etkinlik_tarihi && <span>Etkinlik: {tarihYaz(ilan.etkinlik_tarihi)}</span>}
           </div>
         )}
-        <h3>{ilan.baslik}</h3>
+        {!buyuk && ilan.gorsel ? (
+          <div className="bas-satir">
+            <h3>{ilan.baslik}</h3>
+            {yaprak}
+          </div>
+        ) : <h3>{ilan.baslik}</h3>}
         {!buyuk && <p className="d">{ilan.duzenleyen} · {ilan.yer}{ornek}</p>}
         <p className="kim">{kimler}</p>
         {buyuk && (
