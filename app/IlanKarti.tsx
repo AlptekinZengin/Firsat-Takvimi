@@ -74,8 +74,15 @@ export function IlanKarti({ ilan, bugun, bicim, id }: IlanKartiProps) {
   if (bicim === "satir") {
     return (
       <article id={id} className="sat">
-        <div className="ik" style={renk}>
-          <img src={`/3d/${bolum.nesne}.png`} alt="" />
+        <div className={`ik ${ilan.gorsel ? "gorselli" : ""}`} style={renk}>
+          {ilan.gorsel ? (
+            <>
+              <img className="bulanik" src={`/${ilan.gorsel}`} alt="" loading="lazy" />
+              <img className="asil" src={`/${ilan.gorsel}`} alt="" loading="lazy" />
+            </>
+          ) : (
+            <img src={`/3d/${bolum.nesne}.png`} alt="" />
+          )}
         </div>
         <div className="bilgi">
           <h3>{ilan.baslik}</h3>

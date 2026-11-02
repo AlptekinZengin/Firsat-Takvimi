@@ -215,6 +215,10 @@ footer { padding: 34px 0 46px; font-size: 13px; color: var(--g); }
   display: flex; align-items: center; justify-content: center;
 }
 .sat .ik img { width: 46px; }
+.sat .ik.gorselli { position: relative; overflow: hidden; }
+.sat .ik.gorselli img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sat .ik .bulanik { object-fit: cover; filter: blur(10px); transform: scale(1.2); }
+.sat .ik .asil { object-fit: contain; }
 .sat .son-tarih small { display: block; color: var(--g); font-weight: 500; font-size: 13px; }
 .guv h3 { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
 
