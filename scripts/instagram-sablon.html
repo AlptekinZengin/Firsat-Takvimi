@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root { --z:#F6F3EC; --m:#121826; --gece:#101A33; --tur:#FF6B2C; --kirmizi:#E5372B; --g:#5B6170;
+          --nane:#3FCF9F; --lila:#B9A6FF; --gok:#7CC4FF; --sari:#FFD84D; --pem:#FF8FB1; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1080px; height:1350px; overflow:hidden; background:var(--gece); }
+  body { font-family:'Bricolage Grotesque', sans-serif; color:var(--m); }
+  .slayt { width:1080px; height:1350px; position:relative; overflow:hidden; display:none; }
+  .slayt.acik { display:block; }
+
+  /* Kapak */
+  .kapak { background:var(--gece); color:var(--z); padding:84px 84px 0; }
+  .ust { display:flex; align-items:center; justify-content:space-between; }
+  .ust img { width:88px; height:88px; border-radius:20px; }
+  .ust .alan { font-size:30px; font-weight:600; opacity:.75; }
+  .kapak h1 { font-size:150px; line-height:.92; font-weight:800; letter-spacing:-4px; margin-top:120px; }
+  .kapak h1 em { font-style:normal; color:var(--tur); }
+  .kapak .aralik { font-size:44px; font-weight:600; margin-top:40px; opacity:.85; }
+  .sayi { display:flex; align-items:baseline; gap:24px; margin-top:90px; }
+  .sayi b { font-size:220px; line-height:.8; font-weight:800; color:var(--tur); }
+  .sayi span { font-size:54px; font-weight:600; line-height:1.05; }
+  .etiketler { position:absolute; left:84px; right:84px; bottom:84px; display:flex; flex-wrap:wrap; gap:14px; }
+  .etiketler span { font-size:28px; font-weight:600; padding:12px 24px; border-radius:999px; border:2px solid rgba(246,243,236,.35); }
+
+  /* İlan */
+  .ilan { background:var(--z); }
+  .afis { position:absolute; inset:0 0 auto 0; height:640px; overflow:hidden; background:var(--gece); }
+  .afis .zemin { position:absolute; inset:-60px; background-size:cover; background-position:center; filter:blur(40px) brightness(.8); }
+  .afis img { position:relative; display:block; width:100%; height:100%; object-fit:contain; }
+  .sira { position:absolute; top:28px; right:28px; background:var(--gece); color:var(--z); font-size:26px; font-weight:600; padding:10px 20px; border-radius:999px; }
+  .govde { position:absolute; top:640px; left:0; right:0; bottom:96px; padding:52px 72px 0; }
+  .bolum { display:inline-block; font-size:28px; font-weight:600; padding:8px 22px; border-radius:999px; border:3px solid var(--m); }
+  .govde h2 { font-size:60px; line-height:1.04; font-weight:800; letter-spacing:-1px; margin-top:28px;
+              display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .duzenleyen { font-size:30px; color:var(--g); margin-top:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .tarih { display:flex; align-items:center; gap:20px; margin-top:34px; font-size:38px; font-weight:800; }
+  .tarih .kalan { color:var(--z); background:var(--m); padding:8px 22px; border-radius:14px; }
+  .tarih .kalan.acil { background:var(--kirmizi); }
+  .kimler { font-size:28px; line-height:1.35; color:var(--g); margin-top:26px;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .onlisans { font-size:28px; font-weight:600; margin-top:14px; }
+  .alt { position:absolute; left:0; right:0; bottom:0; height:96px; background:var(--gece); color:var(--z);
+         display:flex; align-items:center; justify-content:space-between; padding:0 72px; font-size:30px; font-weight:600; }
+  .alt b { color:var(--tur); }
+
+  /* Kapanış */
+  .kapanis { background:var(--tur); color:var(--gece); padding:84px; }
+  .kapanis h1 { font-size:128px; line-height:.95; font-weight:800; letter-spacing:-3px; margin-top:150px; }
+  .kapanis .site { display:inline-block; margin-top:60px; font-size:56px; font-weight:800; background:var(--gece); color:var(--z); padding:20px 36px; border-radius:20px; }
+  .kapanis p { font-size:40px; font-weight:600; margin-top:40px; }
+  .kapanis .cagri { position:absolute; left:84px; right:84px; bottom:84px; font-size:36px; font-weight:600; border-top:3px solid var(--gece); padding-top:32px; }
+</style>
+<!-- scripts/instagram.ts slaytları buraya koyar; #n adresi n. slaytı gösterir. -->
+</head>
+<body>
+<!--SLAYTLAR-->
+<script>
+const n = parseInt(location.hash.slice(1) || '1', 10);
+document.querySelectorAll('.slayt')[n - 1].classList.add('acik');
+</script>
+</body>
+</html>

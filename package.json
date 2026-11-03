@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "kontrol": "tsx scripts/kontrol.ts",
-    "test": "tsx --test testler/kontrol.test.ts"
+    "test": "tsx --test testler/kontrol.test.ts",
+    "instagram": "tsx scripts/instagram.ts"
   },
   "dependencies": {
     "next": "16.4.3",
