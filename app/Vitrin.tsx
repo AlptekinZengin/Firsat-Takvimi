@@ -4,16 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import type { IlanGorunur } from "@/lib/ilan-sema";
 import { gunFarki } from "@/lib/tarih";
 import { Basvur, bolumSunumlari } from "./IlanKarti";
-import { gunEkle } from "./ilan-gruplari";
 
 type VitrinProps = { ilanlar: IlanGorunur[]; bugun: string };
 
 const SURE = 5000;
 const bicimle = (secenekler: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat("tr-TR", { timeZone: "UTC", ...secenekler });
-const kisaGun = bicimle({ weekday: "short" });
 const uzunGun = bicimle({ weekday: "long" });
-const gunAy = bicimle({ day: "numeric", month: "short" });
 const gunAyUzun = bicimle({ day: "numeric", month: "long" });
 const gunAyYil = bicimle({ day: "numeric", month: "long", year: "numeric" });
 const tarihNesnesi = (tarih: string) => new Date(`${tarih}T00:00:00Z`);
@@ -30,13 +27,12 @@ function kalanYaz(kalan: number) {
 }
 
 export function Vitrin({ ilanlar, bugun }: VitrinProps) {
-  const gunler = Array.from({ length: 7 }, (_, n) => gunEkle(bugun, n));
+  const yakin = ilanlar.find((i) => i.gorsel && !i.vitrin);
   const etkinlikler = [1, 2].flatMap((sira) => {
     const ilan = ilanlar.find((i) => i.vitrin === sira && i.gorsel);
     return ilan ? [ilan] : [];
   });
   const toplam = etkinlikler.length + 1;
-  const haftaBos = !gunler.some((g) => ilanlar.some((i) => i.son_basvuru === g));
 
   const [secili, setSecili] = useState(0);
   const [fare, setFare] = useState(false);
@@ -81,61 +77,34 @@ export function Vitrin({ ilanlar, bugun }: VitrinProps) {
       >
         <div className="vt-iz" style={{ transform: `translateX(-${aktif * 100}%)` }}>
           <section
-            className="vt-s"
+            className="vt-s vt-ily vt-ilk"
             inert={aktif !== 0}
             aria-roledescription="slide"
-            aria-label={`1 / ${toplam}: Önümüzdeki 7 gün`}
+            aria-label={`1 / ${toplam}: Fırsatı gör, son günü kaçırma`}
           >
-            <div className="sol">
+            <div>
               <h1>Fırsatı gör, <em>son günü</em> kaçırma.</h1>
               <p>
                 Üniversite öğrencilerine açık burs, staj, hackathon, yarışma ve etkinlikler tek takvimde.
                 Hepsi ücretsiz, hepsi düzenleyenin kendi sayfasından.
               </p>
-              <img className="saat" src="/3d/saat.png" alt="" />
+              {yakin && (
+                <div className="vt-yakin">
+                  <p className="vt-kicker">Son günü en yakın</p>
+                  <h2>{yakin.baslik}</h2>
+                  <p className="son">
+                    {sonGunYaz(yakin.son_basvuru, bugun)} · <em>{kalanYaz(gunFarki(yakin.son_basvuru, bugun))}</em>
+                  </p>
+                  <Basvur ilan={yakin} />
+                </div>
+              )}
             </div>
-            <div className="vt-tak">
-              <ol className="vt-hafta" aria-label="Önümüzdeki 7 gün ve son başvurusu o gün olan ilanlar">
-                {gunler.map((g, n) => {
-                  const liste = ilanlar.filter((i) => i.son_basvuru === g);
-                  return (
-                    <li key={g} className={`vt-gun ${n === 0 ? "bugun" : ""}`}>
-                      <time className="vt-et" dateTime={g}>
-                        <b>{n === 0 ? "Bugün" : n === 1 ? "Yarın" : kisaGun.format(tarihNesnesi(g))}</b>
-                        {n > 1 && <span>{gunAy.format(tarihNesnesi(g))}</span>}
-                      </time>
-                      {liste.length > 0 && (
-                        <ul className="vt-mini">
-                          {liste.map((i) => {
-                            const bolum = bolumSunumlari[i.bolum];
-                            return (
-                              <li key={i.id}>
-                                <a
-                                  href={`#ilan-${i.id.replaceAll("/", "-")}`}
-                                  title={i.baslik}
-                                  aria-label={`${i.baslik}, ${i.duzenleyen}`}
-                                  style={{ background: `var(--${bolum.renk})` }}
-                                >
-                                  {i.gorsel ? (
-                                    <>
-                                      <img className="bulanik" src={`/${i.gorsel}`} alt="" loading="lazy" />
-                                      <img className="asil" src={`/${i.gorsel}`} alt="" loading="lazy" />
-                                    </>
-                                  ) : (
-                                    <img className="nesne" src={`/3d/${bolum.nesne}.png`} alt="" loading="lazy" />
-                                  )}
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-              {haftaBos && <p className="vt-bos">Önümüzdeki 7 günde son başvurusu olan ilan yok.</p>}
-            </div>
+            {yakin && (
+              <div className="afis gorselli vt-afis" style={{ background: `var(--${bolumSunumlari[yakin.bolum].renk})` }}>
+                <img className="bulanik" src={`/${yakin.gorsel}`} alt="" />
+                <img className="asil" src={`/${yakin.gorsel}`} alt={yakin.baslik} />
+              </div>
+            )}
           </section>
           {etkinlikler.map((ilan, n) => {
             const bolum = bolumSunumlari[ilan.bolum];
