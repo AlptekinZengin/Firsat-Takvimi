@@ -70,7 +70,7 @@ export function IlanListesi({ ilanlar, derlemeGunu }: IlanListesiProps) {
     <main className="kap">
       <nav aria-label="Ana gezinme">
         <a className="logo" href="/">
-          <img src="/3d/spiral.png" alt="" />Fırsat Takvimi
+          <img src="/logo.png" alt="" />Fırsat Takvimi
         </a>
         <div className="nl">
           {menuBaglantilari.map((b) => <a key={b.href} className={b.sinif} href={b.href}>{b.ad}</a>)}
